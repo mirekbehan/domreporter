@@ -1,4 +1,4 @@
-package com.angelmobil.testmaven;
+package com.domreporter.admin;
 
 import java.util.Set;
 
@@ -6,9 +6,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 
-import com.angelmobil.testmaven.domain.Person;
-import com.angelmobil.testmaven.ui.BasicCrudView;
-
+import com.domreporter.admin.domain.Person;
+import com.domreporter.admin.ui.BasicCrudView;
 import com.vaadin.Application;
 import com.vaadin.addon.jpacontainer.JPAContainerFactory;
 import com.vaadin.data.Property;

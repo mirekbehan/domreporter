@@ -1,4 +1,4 @@
-package com.angelmobil.testmaven.ui;
+package com.domreporter.admin.ui;
 
 import java.util.Arrays;
 
@@ -9,8 +9,8 @@ import com.vaadin.data.Item;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.event.Action;
-import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.Action.Handler;
+import com.vaadin.event.ShortcutAction;
 import com.vaadin.event.ShortcutAction.KeyCode;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
@@ -36,7 +36,7 @@ public class BasicCrudView<T> extends AbsoluteLayout implements
 	private Table table;
 	private Form form;
 	private FieldFactory fieldFactory;
-	private Class<T> entityClass;
+	private final Class<T> entityClass;
 	private Button commit;
 	private Button discard;
 	private Object[] formPropertyIds;

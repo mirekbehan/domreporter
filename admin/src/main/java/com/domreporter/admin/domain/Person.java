@@ -1,4 +1,4 @@
-package com.angelmobil.testmaven.domain;
+package com.domreporter.admin.domain;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
