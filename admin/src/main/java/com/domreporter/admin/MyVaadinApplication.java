@@ -82,9 +82,12 @@ public class MyVaadinApplication extends Application {
 	static {
 		EntityManager em = JPAContainerFactory
 				.createEntityManagerForPersistenceUnit(PERSISTENCE_UNIT);
-
-		long size = (Long) em.createQuery("SELECT COUNT(p) FROM Person p").getSingleResult();
-
+		long size = 0;
+		try {
+			size = (Long) em.createQuery("SELECT COUNT(p) FROM Person p").getSingleResult();
+		} catch (Exception e) {
+			size = 0;
+		}
 //		if (em.getMetamodel().getEntities().size()==0) {
 
 			if (size == 0) {
