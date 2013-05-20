@@ -14,12 +14,13 @@
 			<property name="eclipselink.jdbc.user" value="domreporter" />
 			<property name="eclipselink.jdbc.password" value="domreporter" />
 			<property name="eclipselink.logging.level" value="FINE" />
-	<!-- 		<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
- 	 -->		
- 			<property name="eclipselink.ddl-generation" value="CREATE_ONLY" />
-	
- 					<property name="eclipselink.ddl-generation.output-mode"  value="database" />
 			
+			<property name="eclipselink.ddl-generation" value="create-tables" />
+			<property name="eclipselink.ddl-generation.output-mode" value="database" />
+
+		<!-- 		<property name="eclipselink.ddl-generation" value="create-or-extend-tables" />
+ 	 -->		
+ 			
 			
 		</properties>
 	</persistence-unit>
