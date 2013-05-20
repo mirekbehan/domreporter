@@ -22,7 +22,7 @@ import com.vaadin.ui.Window;
 @SuppressWarnings("serial")
 public class MyVaadinApplication extends Application {
 
-	public static final String PERSISTENCE_UNIT = "com.angelmobil.testmaven";
+	public static final String PERSISTENCE_UNIT = "db";
 
 	@Override
 	public void init() {
@@ -84,7 +84,10 @@ public class MyVaadinApplication extends Application {
 				.createEntityManagerForPersistenceUnit(PERSISTENCE_UNIT);
 
 		long size = (Long) em.createQuery("SELECT COUNT(p) FROM Person p").getSingleResult();
-		if (size == 0) {
+
+//		if (em.getMetamodel().getEntities().size()==0) {
+
+			if (size == 0) {
 			// create two Person objects as test data
 
 			em.getTransaction().begin();
