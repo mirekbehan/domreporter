@@ -43,6 +43,10 @@ public class ReportService {
 		}
 		Report report = new Report();
 		String htmlOutput = report.getReport(start, end, url);
+		
+		String outputCheck = htmlOutput.substring(0, Math.min(htmlOutput.length(), 800));
+		System.out.println(outputCheck);
+		
 		InputStream is = new ByteArrayInputStream(htmlOutput.getBytes());
 		ResponseBuilder response = Response.ok((Object) is);
 		response.header("Content-Disposition", "attachment; filename=report.html");

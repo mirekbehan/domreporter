@@ -8,12 +8,11 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.ResponseBuilder;
 
 @Path("/download")
-public class ExtensionDownload {
-	// download service
+public class ExtensionDownloadService {
 	@GET
 	@Produces("application/x-chrome-extension")
 	public Response download(){
-		InputStream in = ExtensionDownload.class.getResourceAsStream("../DOM_Reporter.crx");
+		InputStream in = ExtensionDownloadService.class.getResourceAsStream("../DOM_Reporter.crx");
 		ResponseBuilder response = Response.ok((Object) in);
 		response.header("Content-Disposition",
 			"attachment; filename=\"domreporter.crx\"");

@@ -20,9 +20,6 @@ import com.domreporter.model.GroupedClick;
 import com.domreporter.model.HtmlSnapshot;
 import com.domreporter.util.HibernateUtil;
 
-
-
-
 @SuppressWarnings("unchecked")
 public class Report {
 	private HtmlSnapshot snapshot;
@@ -55,16 +52,18 @@ public class Report {
 		Element body = doc.body();
 		Element currentElement = null;
 		String color = getRandomColor();
+		String complementary = calculateComplementaryColor(color);
 		for (int i = 0; i < clicks.size(); i++) {
 			if (i > 0) {
 				if (!(clicks.get(i).getClientSessionId().equals(clicks.get(
 						i - 1).getClientSessionId()))) {
 					color = getRandomColor();
+					complementary = calculateComplementaryColor(color);
 				}
 			}
-			int left = clicks.get(i).getElementX() - 10;// - 7; // 7 is adjusting value
-														
-			int top = clicks.get(i).getElementY() - 10; // - 18; // 18 is adjusting value
+			int left = clicks.get(i).getElementX() - 6; // -6 is adjusting value
+			int top = clicks.get(i).getElementY() - 6;  // to center the circle
+			
 			if (clicks.get(i).getElementId() == -5) {
 				currentElement = body;
 			}
@@ -76,39 +75,57 @@ public class Report {
 			}
 			currentElement.append("<span style='background-color: "
 							+ color
-							+ "; width: 20px; height: 20px; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; opacity: 0.5; position: absolute; left:"
-							+ left + "px; top: " + top + "px; display:block; '></span>");
+							+ "; width: 8px; height: 8px; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; position: absolute; left:"
+							+ left + "px; top: " + top + "px; border: 2px solid "+complementary+"; display:block;'></span>");
 							
 		}
 		
-		/*
-		 * Each object has three attributes: elementId, corresponding
-		 * elementName and a count of all clicks within a given element.
-		 * Click count is very important for another method which computes
-		 * the element heat color.
-		 */
+		
+		 // Each object has three attributes: elementId, corresponding
+		 // elementName and a count of all clicks within a given element.
+		 // Click count is very important for another method which computes
+		 // the element heat color.
+		 
 		groupedClicks = groupByElementIds(startDate, endDate, url);
 		for (int i = 0; i < groupedClicks.size(); i++) {
+			String styles = "position: relative; background-color: "
+					+ getHeatColor(clicks.size(), groupedClicks.get(i)
+							.getElementIdCount())+";";
+			
 			if (groupedClicks.get(i).getElementId() != -5
 					&& groupedClicks.get(i).getElementId() != -10) {
 				currentElement = body
 						.select("[data-id="
 								+ groupedClicks.get(i).getElementId() + "]")
 						.first();
+				
+				if (groupedClicks.get(i).getElementName()
+						.equalsIgnoreCase("IMG")
+						|| groupedClicks.get(i).getElementName()
+								.equalsIgnoreCase("HR")
+						|| groupedClicks.get(i).getElementName()
+								.equalsIgnoreCase("INPUT")) {
+					currentElement.wrap("<div style='" + styles + "'></div>");
+				} else {
+					currentElement.attr("style", styles);
+				}
+
+				
 			} else {
 				currentElement = body;
+				String temp1 = body.attr("style");
+				body.attr("style",styles + " " + temp1);
 			}
 		
-			String styles = "position: relative; border: 1px dashed #057D9F; background-color: " + getHeatColor(clicks.size(), groupedClicks.get(i).getElementIdCount());
-			if (groupedClicks.get(i).getElementName().equalsIgnoreCase("IMG")
-					|| groupedClicks.get(i).getElementName()
-							.equalsIgnoreCase("HR")) {
-				currentElement.wrap("<div style='" + styles + "'></div>");
-			} else {
-				currentElement.attr("style", styles);
-			}
-
+				
+				
 		}
+		
+		// disable overflow:hidden if any
+		String temp2 = "overflow: visible !important;" + body.attr("style");
+		body.attr("style",temp2);
+		
+		
 		return doc.html();
 		} catch (Exception e) {
 			System.out.println("Couldn't get the report.");
@@ -157,7 +174,7 @@ public class Report {
 	}
 	
 	/**
-	 * Gets one snapshot of desired page.
+	 * Gets one snapshot of the desired page.
 	 * @param startDate start date
 	 * @param endDate end date
 	 * @param url a url of the page for which a user wants the report
@@ -165,14 +182,16 @@ public class Report {
 	 */
 	public HtmlSnapshot getSnapshot(Date startDate, Date endDate, String url){
 		Criteria criteria = this.getSession().createCriteria(HtmlSnapshot.class);
-		if(startDate!=null){
+		if(startDate!=null && endDate!=null && url!=null){
 			criteria.add(Restrictions.ge("snapshotCreationTime",startDate));
-		}
-		if(endDate!=null){
+		
 			criteria.add(Restrictions.le("snapshotCreationTime",endDate));
-		}
-		if(url!=null){
+		
 			criteria.add(Restrictions.eq("url",url));
+		}else{
+			System.out.println("No HTML snapshot: null argument(s)");
+			return null;
+			
 		}
 		criteria.setMaxResults(1);
 		HtmlSnapshot htmlSnapshot = new HtmlSnapshot();
@@ -243,5 +262,11 @@ public class Report {
 			color += letters[Math.round((float) Math.random() * 15)];
 		}
 		return color;	
+	}
+	
+	public String calculateComplementaryColor(String color){
+		int i = (int)Long.parseLong(color.substring(1),16);
+		int cc = 0xFFFFFF - i;
+		return String.format("#%06X", (0xFFFFFF & cc));
 	}
 }

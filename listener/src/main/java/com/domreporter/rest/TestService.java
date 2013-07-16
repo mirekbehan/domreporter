@@ -9,9 +9,10 @@ import javax.ws.rs.core.MediaType;
 
 
 @Path("/ip")
-public class RemoteAddress {
+public class TestService {
 	/**
 	 * Resource providing IP information of given client. Useful for bypassing same origin policy.
+	 * Can be used to test service availability.
 	 * @param request HTTP Request
 	 * @return IP address of the remote host
 	 */

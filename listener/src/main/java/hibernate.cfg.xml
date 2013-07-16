@@ -19,8 +19,8 @@
 		<property name="hibernate.current_session_context_class">thread</property>
 	
 	<!-- Entity model-->
-		<mapping class="model.Click" />
-		<mapping class="model.HtmlSnapshot" />
+		<mapping class="com.domreporter.model.Click" />
+		<mapping class="com.domreporter.model.HtmlSnapshot" />
 
 		
 	</session-factory>

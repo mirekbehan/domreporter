@@ -1,54 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <web-app xmlns="http://java.sun.com/xml/ns/javaee"
       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
       version="3.0"> 
-
-    <welcome-file-list>
-        <welcome-file>welcome-file.jsp</welcome-file>
-    </welcome-file-list>
    <display-name>listener</display-name>
-   <!-- <servlet>
-      <servlet-name>Jersey REST Service</servlet-name>
-
-      
-      <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-      <init-param>
-         <param-name>com.sun.jersey.config.property.packages</param-name>
-         <param-value>rest</param-value>
-      </init-param>
-      <init-param>
-         <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
-         <param-value>true</param-value>
-      </init-param>
-      <load-on-startup>1</load-on-startup>
-   </servlet>
-   <servlet-mapping>
-      <servlet-name>Jersey REST Service</servlet-name>
-      <url-pattern>/rest/*</url-pattern>
-   </servlet-mapping> -->
-   <security-constraint>
-      <web-resource-collection>
-         <web-resource-name>Basic Authentication</web-resource-name>
-         <url-pattern>/admin/*</url-pattern>
-         <http-method>GET</http-method>
-         <http-method>POST</http-method>
-      </web-resource-collection>
-      <auth-constraint>
-         <role-name>tomcat</role-name>
-      </auth-constraint>
-      <user-data-constraint>
-         <!-- transport-guarantee can be CONFIDENTIAL, INTEGRAL, or NONE -->
-         <transport-guarantee>NONE</transport-guarantee>
-      </user-data-constraint>
-   </security-constraint>
-   <security-role>
-      <role-name>tomcat</role-name>
-   </security-role>
-   <login-config>
-      <auth-method>BASIC</auth-method>
-   </login-config>
    <filter>
       <filter-name>jersey</filter-name>
       <filter-class>com.sun.jersey.spi.container.servlet.ServletContainer</filter-class>
@@ -61,13 +16,6 @@
          <param-name>com.sun.jersey.api.json.POJOMappingFeature</param-name>
          <param-value>true</param-value>
       </init-param>
-
-		
-      
-      <init-param>
-         <param-name>com.sun.jersey.config.property.JSPTemplatesBasePath</param-name>
-         <param-value>/WEB-INF/jsp</param-value>
-      </init-param>
       <init-param>
          <param-name>com.sun.jersey.config.property.WebPageContentRegex</param-name>
          <param-value>/(images|js|styles|(WEB-INF/jsp))/.*</param-value>
@@ -77,21 +25,4 @@
       <filter-name>jersey</filter-name>
       <url-pattern>/*</url-pattern>
    </filter-mapping>
-   
-   <error-page>
-
-<error-code>500</error-code>
-
-<location>/server_error_500.html</location>
-
-</error-page>
-
-<error-page>
-
-<error-code>404</error-code>
-
-<location>/server_error_404.html</location>
-
-</error-page>
-   
 </web-app>
