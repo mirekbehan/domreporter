@@ -63,7 +63,6 @@ public class LoginView extends CustomComponent implements View, Button.ClickList
         setCompositionRoot(viewLayout);
     }
     
-    @Override
     public void enter(ViewChangeEvent event) {
         // focus the username field when user arrives to the login view
         user.focus();
@@ -98,7 +97,6 @@ public class LoginView extends CustomComponent implements View, Button.ClickList
         }
     }
 
-    @Override
     public void buttonClick(ClickEvent event) {
 
          //

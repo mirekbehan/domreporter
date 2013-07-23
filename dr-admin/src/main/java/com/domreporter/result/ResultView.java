@@ -177,7 +177,6 @@ public class ResultView extends AbsoluteLayout implements View{
 	}
 
 	
-	@Override
 	public void enter(ViewChangeEvent event) {
 		//	TODO
 		

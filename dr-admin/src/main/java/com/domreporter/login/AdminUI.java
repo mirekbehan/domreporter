@@ -49,7 +49,6 @@ public class AdminUI extends UI {
 		getSession().getService().setSystemMessagesProvider(new SystemMessagesProvider() {
 			private static final long serialVersionUID = 1L;
 
-			@Override
 			public SystemMessages getSystemMessages(
 					
 			    SystemMessagesInfo systemMessagesInfo) {
@@ -84,8 +83,7 @@ public class AdminUI extends UI {
         getNavigator().addViewChangeListener(new ViewChangeListener() {
 			private static final long serialVersionUID = 1L;
 
-			@Override
-            public boolean beforeViewChange(ViewChangeEvent event) {
+			public boolean beforeViewChange(ViewChangeEvent event) {
                 
                 // Check if a user has logged in
                 boolean isLoggedIn = getSession().getAttribute("user") != null;
@@ -106,7 +104,6 @@ public class AdminUI extends UI {
                 return true;
             }
             
-            @Override
             public void afterViewChange(ViewChangeEvent event) {
                 
             }

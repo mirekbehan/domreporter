@@ -146,7 +146,6 @@ public class MainView extends AbsoluteLayout implements View {
 	}
 
 
-	@Override
 	public void enter(ViewChangeEvent event) {
 		Notification.show("Welcome to the administration area");
 		

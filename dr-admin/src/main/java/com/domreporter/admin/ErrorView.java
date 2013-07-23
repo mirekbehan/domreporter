@@ -37,7 +37,6 @@ public class ErrorView extends AbsoluteLayout implements View{
 		addComponent(hLayout,"left: 0%; right: 0%;" +
     			"top: 0%; bottom: 0%;");		
 	}
-	@Override
 	public void enter(ViewChangeEvent event) {
 		// TODO Auto-generated method stub
 		

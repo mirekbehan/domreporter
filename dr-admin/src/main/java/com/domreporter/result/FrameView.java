@@ -151,7 +151,6 @@ public class FrameView extends AbsoluteLayout implements View {
                private static final long serialVersionUID = 8337866232702077402L;
 
                InputStream is = new BufferedInputStream(new ByteArrayInputStream(htmlData));
-               @Override
                public InputStream getStream() {
                    return is;
                }
@@ -160,7 +159,6 @@ public class FrameView extends AbsoluteLayout implements View {
 		return ss;
 
 	}
-	@Override
 	public void enter(ViewChangeEvent event) {
 		// TODO Auto-generated method stub
 		
