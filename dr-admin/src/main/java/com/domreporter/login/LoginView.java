@@ -33,7 +33,7 @@ public class LoginView extends CustomComponent implements View, Button.ClickList
         user = new TextField("User:");
         user.setWidth("300px");
         user.setRequired(true);
-        user.setInputPrompt("Your username (eg. joe@email.com)");
+        user.setInputPrompt("Your username");
         // TODO user.addValidator(new EmailValidator("Username must be an email address"));
         user.setInvalidAllowed(false);
 
@@ -50,7 +50,7 @@ public class LoginView extends CustomComponent implements View, Button.ClickList
 
         // Add both to a panel
         VerticalLayout fields = new VerticalLayout(user, password, loginButton);
-        fields.setCaption("Please login to access the application. (test@test.com/passw0rd)");
+        fields.setCaption("Please login to access the application.");
         fields.setSpacing(true);
         fields.setMargin(new MarginInfo(true, true, true, false));
         fields.setSizeUndefined();
@@ -115,8 +115,8 @@ public class LoginView extends CustomComponent implements View, Button.ClickList
          // Validate username and password with database here. For examples sake
          // I use a dummy username and password.
          //
-        boolean isValid = username.equals("tom")
-                && password.equals("general1");
+        boolean isValid = username.equals("admin")
+                && password.equals("admin1admin");
 
         if(isValid){
             // Store the current user in the service session
