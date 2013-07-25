@@ -34,7 +34,6 @@ public class LoginView extends CustomComponent implements View, Button.ClickList
         user.setWidth("300px");
         user.setRequired(true);
         user.setInputPrompt("Your username");
-        // TODO user.addValidator(new EmailValidator("Username must be an email address"));
         user.setInvalidAllowed(false);
 
         // Create the password input field
