@@ -32,10 +32,9 @@ public class AdminUI extends UI {
 		try {
 			final JDBCConnectionPool pool = new SimpleJDBCConnectionPool(
 					"com.mysql.jdbc.Driver",
-					"jdbc:mysql://localhost/db", "domreporter", "domreporter");
-			//TableQuery query = new TableQuery("document_dom", pool);
+					"jdbc:mysql://localhost/domreport", "domreport", "domreporter");
 			FreeformQuery query = new FreeformQuery("SELECT DISTINCT url FROM click", 
-					pool);//, "url");
+					pool);
 			SQLContainer container = new SQLContainer(query);
 			
 			return container;

@@ -51,7 +51,7 @@ public class ResultView extends AbsoluteLayout implements View{
 		try {
 			final JDBCConnectionPool pool = new SimpleJDBCConnectionPool(
 					"com.mysql.jdbc.Driver",
-					"jdbc:mysql://localhost/db", "domreporter", "domreporter");
+					"jdbc:mysql://localhost/domreport", "domreport", "domreporter");
 			TableQuery query = new TableQuery("click", pool);
 			SQLContainer container = new SQLContainer(query);
 			return container;
