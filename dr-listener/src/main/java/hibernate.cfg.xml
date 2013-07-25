@@ -6,7 +6,7 @@
 	<session-factory>
 	
 	<!-- User and password settings -->
-		<property name="hibernate.connection.url">jdbc:mysql://localhost/db</property>
+		<property name="hibernate.connection.url">jdbc:mysql://localhost/domreport</property>
 		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 		<property name="hibernate.connection.username">domreport</property>
 		<property name="hibernate.connection.password">domreporter</property>
