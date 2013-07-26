@@ -23,12 +23,10 @@ import com.vaadin.data.util.sqlcontainer.query.TableQuery;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.FileResource;
-import com.vaadin.server.ThemeResource;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
@@ -45,7 +43,6 @@ public class ResultView extends AbsoluteLayout implements View{
 	public static final String NAME = "result";
 	
 	private Table resultTable;
-	private String url;
 	
 	private SQLContainer createResultContainer() {
 		try {
@@ -62,7 +59,6 @@ public class ResultView extends AbsoluteLayout implements View{
 	
 	
 	public ResultView(String url, Date startDate, Date endDate){
-		this.url = url;
 		VerticalLayout layout = new VerticalLayout();
 		setSizeFull();
 		layout.setSizeUndefined();
@@ -178,8 +174,7 @@ public class ResultView extends AbsoluteLayout implements View{
 
 	
 	public void enter(ViewChangeEvent event) {
-		//	TODO
-		
+		//	TODO		
 	}
 
 }

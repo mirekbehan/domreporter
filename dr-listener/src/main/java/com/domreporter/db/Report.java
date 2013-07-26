@@ -26,6 +26,9 @@ public class Report {
 	private List<Click> clicks;
 	private List<GroupedClick> groupedClicks;
 	
+	public final static float GRC = 0.618033988749895f;
+	private float h = 0;
+	
 	protected Session getSession() {
 		return HibernateUtil.getSession();
 	}
@@ -41,7 +44,7 @@ public class Report {
 	 * @param url a url of the page for which a user wants the report
 	 * @return a html page String that contains additional styles which highlight spots where users clicked
 	 */
-	public String getReport(Date startDate, Date endDate, String url){
+	public String getReport(Date startDate, Date endDate, String url, Boolean overlay){
 		try {
 			HibernateUtil.beginTransaction();
 			snapshot = getSnapshot(startDate, endDate, url);
@@ -52,17 +55,15 @@ public class Report {
 		Element body = doc.body();
 		Element currentElement = null;
 		String color = getRandomColor();
-		String complementary = calculateComplementaryColor(color);
 		for (int i = 0; i < clicks.size(); i++) {
 			if (i > 0) {
 				if (!(clicks.get(i).getClientSessionId().equals(clicks.get(
 						i - 1).getClientSessionId()))) {
-					color = getRandomColor();
-					complementary = calculateComplementaryColor(color);
+					color = getRandomColor();					
 				}
 			}
-			int left = clicks.get(i).getElementX() - 6; // -6 is adjusting value
-			int top = clicks.get(i).getElementY() - 6;  // to center the circle
+			int left = clicks.get(i).getElementX() - 5; // -5 is adjusting value
+			int top = clicks.get(i).getElementY() - 5;  // to center the circle
 			
 			if (clicks.get(i).getElementId() == -5) {
 				currentElement = body;
@@ -73,11 +74,17 @@ public class Report {
 			if (clicks.get(i).getElementId() != -5 && clicks.get(i).getElementId() != -10) {
 				currentElement = body.select("[data-id=" + clicks.get(i).getElementId() + "]").first();
 			}
-			currentElement.append("<span style='background-color: "
-							+ color
-							+ "; width: 8px; height: 8px; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; position: absolute; left:"
-							+ left + "px; top: " + top + "px; border: 2px solid "+complementary+"; display:block;'></span>");
-							
+			if(overlay){
+				currentElement.append("<span style='background-color: "
+						+ color
+						+ "; width: 10px; height: 10px; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; position: absolute; left:"
+						+ left + "px; top: " + top + "px; display:block; z-index: 9999;'></span>");
+			}else{			
+				currentElement.append("<span style='background-color: "
+						+ color
+						+ "; width: 9px; height: 9px; border-top-left-radius: 20px; border-top-right-radius: 20px; border-bottom-right-radius: 20px; border-bottom-left-radius: 20px; position: absolute; left:"
+						+ left + "px; top: " + top + "px; display: block;border: 1px solid black;'></span>");
+			}			
 		}
 		
 		
@@ -120,7 +127,16 @@ public class Report {
 				
 				
 		}
-		
+		// set z-index to auto for all elements - is needed for overlay
+		if(overlay) {
+			doc.head().append("<style>*:not(span){ z-index: auto !important;} .dr_overlay {position:fixed; width:100%;	height:100%; top:0; left:0; right:0; bottom:0;"
+					+ "background-color:rgba(100, 100, 100, 0.85);"
+					+ "background: url(data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuNUmK/OAAAAATSURBVBhXY2RgYNgHxGAAYuwDAA78AjwwRoQYAAAAAElFTkSuQmCC) repeat scroll transparent\\9;"
+					+"z-index:9990; color:white;}</style>");
+			doc.body().append("<div class='dr_overlay'>&nbsp;</div>");
+		}
+
+
 		// disable overflow:hidden if any
 		String temp2 = "overflow: visible !important;" + body.attr("style");
 		body.attr("style",temp2);
@@ -226,7 +242,7 @@ public class Report {
 	 * Gets heat color.
 	 * @param clicksTotal max value
 	 * @param value number of clicks of an element 
-	 * @return color string in rgb(000,128,255) format
+	 * @return color string in rgb(r,g,b) format
 	 */
 	public String getHeatColor(int clicksTotal, int value){
 		int oldMax = clicksTotal/2;
@@ -235,38 +251,30 @@ public class Report {
 		int colorRange = 100;
 		int res = Math.round(((value - oldMin) * colorRange) / range);
 		
-		
 		float hue = 0.125f; //hue
-		//float saturation = 1.0f; //saturation
 		float lumination= 1.0f; //lumination
-		
 		String heatColor;
 			
 		Color col = Color.getHSBColor(hue, res*0.01f, lumination);
 		heatColor = "rgb(" +
 				col.getRed() + "," + col.getGreen() + "," +
 				col.getBlue()+		")";
-		
-		
 		return heatColor;
 	}
 	
 	/**
 	 * Gets random color.
-	 * @return a string in html color format, for example #fffeee
+	 * @return a string in html color format, for example rgb(252,50,118)
 	 */
 	public String getRandomColor(){
-		String letters[] = { "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F" };
-		String color = "#";
-		for (int i = 0; i < 6; i++) {
-			color += letters[Math.round((float) Math.random() * 15)];
-		}
-		return color;	
-	}
+		String rColor;
+		h += GRC;
+		h %= 1;
+		Color col = Color.getHSBColor(h, 0.8f, 0.99f);
+		rColor = "rgb(" +
+				col.getRed() + "," + col.getGreen() + "," +
+				col.getBlue()+		")";
+		return rColor;
+	}	
 	
-	public String calculateComplementaryColor(String color){
-		int i = (int)Long.parseLong(color.substring(1),16);
-		int cc = 0xFFFFFF - i;
-		return String.format("#%06X", (0xFFFFFF & cc));
-	}
 }

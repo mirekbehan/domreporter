@@ -12,11 +12,14 @@ public class ExtensionDownloadService {
 	@GET
 	@Produces("application/x-chrome-extension")
 	public Response download(){
-		InputStream in = ExtensionDownloadService.class.getResourceAsStream("../ClickSender.crx");
+		// TODO Temporarily disabled
+		
+		/*InputStream in = ExtensionDownloadService.class.getResourceAsStream("../ClickSender.crx");
 		ResponseBuilder response = Response.ok((Object) in);
 		response.header("Content-Disposition",
 			"attachment; filename=\"ClickSender.crx\"");
-		return response.build();
+		return response.build();*/
+		return null;
 	}
 
 }

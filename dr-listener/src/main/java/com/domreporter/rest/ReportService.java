@@ -30,7 +30,8 @@ public class ReportService {
 	@Produces(MediaType.APPLICATION_OCTET_STREAM)
 	public Response makeReport(@FormParam("page_url") String url,
 			@FormParam("start_date") String startDate,
-			@FormParam("end_date") String endDate) {
+			@FormParam("end_date") String endDate,
+			@FormParam("overlay") Boolean overlay) {
 		Date start = new Date();
 		Date end = new Date();
 		DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
@@ -42,7 +43,7 @@ public class ReportService {
 			e.printStackTrace();
 		}
 		Report report = new Report();
-		String htmlOutput = report.getReport(start, end, url);
+		String htmlOutput = report.getReport(start, end, url, overlay);
 		
 		String outputCheck = htmlOutput.substring(0, Math.min(htmlOutput.length(), 800));
 		System.out.println(outputCheck);

@@ -38,6 +38,8 @@ public class FrameView extends AbsoluteLayout implements View {
 	private static final long serialVersionUID = 1L;
 
 	public static final String NAME = "html";
+
+	private static final String SERVICE_URL = "http://ratelo.com/report/html";
 	
 	private BrowserFrame browser;
 	
@@ -45,7 +47,7 @@ public class FrameView extends AbsoluteLayout implements View {
 	private FileDownloader fd;
 	Button exportButton;
 	
-	public FrameView(String url, Date startDate, Date endDate){
+	public FrameView(String url, Date startDate, Date endDate, Boolean overlay){
 		VerticalLayout layout = new VerticalLayout();
 		setSizeFull();
 		layout.setSizeFull();
@@ -74,16 +76,16 @@ public class FrameView extends AbsoluteLayout implements View {
                 .getBaseDirectory().getAbsolutePath()+"/WEB-INF/html_icon.png")));
 		
 		try {
-			fd = new FileDownloader(new StreamResource(getHtmlReportSource(url,startDate,endDate),"report.html"));
+			fd = new FileDownloader(new StreamResource(getHtmlReportSource(url,startDate,endDate,overlay),"report.html"));
 			fd.extend(exportButton);
 		} catch (Exception e1) {
 			e1.printStackTrace();			
 		}
 
 		try {			
-			browser = new BrowserFrame("HTML page generated from the server:");//,
+			browser = new BrowserFrame("HTML page generated for the server: " + url);//,
 			browser.setSizeFull();
-			StreamResource sr = new StreamResource(getHtmlReportSource(url,startDate,endDate),"report.html");
+			StreamResource sr = new StreamResource(getHtmlReportSource(url,startDate,endDate,overlay),"report.html");
 			sr.setCacheTime(0);
 			browser.setSource(sr);
 			layout.addComponent(browser);
@@ -112,9 +114,8 @@ public class FrameView extends AbsoluteLayout implements View {
 		addComponent(backButton, "right: 48px; top: 0px;");
 	}
 	
-	public StreamSource getHtmlReportSource(String url, Date startDate, Date endDate) throws Exception{
-		String serviceUrl = "http://localhost:8080/dr-listener/report/html";
-		URL obj = new URL(serviceUrl);
+	public StreamSource getHtmlReportSource(String url, Date startDate, Date endDate, Boolean overlay) throws Exception{
+		URL obj = new URL(SERVICE_URL);
 		HttpURLConnection connection = (HttpURLConnection) obj.openConnection();
 		connection.setRequestMethod("POST");
 		connection.setRequestProperty("User-Agent", "Mozilla/5.0");
@@ -123,7 +124,7 @@ public class FrameView extends AbsoluteLayout implements View {
 		DateFormat formatter = new SimpleDateFormat("MM-dd-yyyy HH:mm:ss");
 		String sDate = formatter.format(startDate);
 		String eDate = formatter.format(endDate);
-		String urlParameters = "page_url="+URLEncoder.encode(url,"UTF-8")+"&start_date="+sDate+"&end_date="+eDate;
+		String urlParameters = "page_url="+URLEncoder.encode(url,"UTF-8")+"&start_date="+sDate+"&end_date="+eDate+"&overlay="+overlay;
 		
 		connection.setDoOutput(true);
 		DataOutputStream wr = new DataOutputStream(connection.getOutputStream());
@@ -132,7 +133,7 @@ public class FrameView extends AbsoluteLayout implements View {
 		wr.close();
 		
 		int responseCode = connection.getResponseCode();
-		System.out.println("\nSending 'POST' request to URL : " + serviceUrl);
+		System.out.println("\nSending 'POST' request to URL : " + SERVICE_URL);
 		System.out.println("Post parameters : " + urlParameters);
 		System.out.println("Response Code : " + responseCode);
 		

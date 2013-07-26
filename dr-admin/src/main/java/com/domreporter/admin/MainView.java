@@ -13,6 +13,7 @@ import com.vaadin.shared.ui.datefield.Resolution;
 import com.vaadin.ui.AbsoluteLayout;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.FormLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -32,6 +33,7 @@ public class MainView extends AbsoluteLayout implements View {
 	
 	private PopupDateField startDateField;
 	private PopupDateField endDateField;
+	private final CheckBox overlayChkBox;
 	private Table urlTable;
 	SQLContainer container;
 
@@ -39,12 +41,10 @@ public class MainView extends AbsoluteLayout implements View {
 		this.container = urlContainer;
 		setWidth("100%");
 		setHeight("100%");
-		//setStyleName(Reindeer.LAYOUT_BLUE);
 		VerticalLayout layout = new VerticalLayout();
 		Label headerLabel = new Label("Admin area");
 		headerLabel.setStyleName(Reindeer.LABEL_H1);
 		layout.addComponent(headerLabel);
-		
 		
 		Button logoutButton = new Button( "Logout");
 		logoutButton.setStyleName(BaseTheme.BUTTON_LINK);
@@ -55,7 +55,6 @@ public class MainView extends AbsoluteLayout implements View {
 	                        Type.HUMANIZED_MESSAGE);
 				  	// "Logout" the user
 		            getSession().setAttribute("user", null);
-
 		            // Refresh this view, should redirect to login view
 		            getUI().getNavigator().navigateTo(NAME);
 			}
@@ -102,7 +101,7 @@ public class MainView extends AbsoluteLayout implements View {
 		});
 		
 		hlayout.addComponent(reportButton);
-		
+		overlayChkBox = new CheckBox("overlay");
 		Button visualizeButton = new Button("Visualisation");
 		visualizeButton.addClickListener(new Button.ClickListener() {
 			private static final long serialVersionUID = 1L;
@@ -111,11 +110,11 @@ public class MainView extends AbsoluteLayout implements View {
 				String urlString = String.valueOf(container.getContainerProperty(urlTable.getValue(), "url"));
 				
 				
-				if (urlString == "null"){// || StringUtils.isBlank(urlString)) {
+				if (urlString == "null"){
 					Notification.show("Select a URL!",
 	                        Type.HUMANIZED_MESSAGE);					
 				}else {
-					getUI().getNavigator().addView(FrameView.NAME, new FrameView(urlString, startDateField.getValue(), endDateField.getValue()));				
+					getUI().getNavigator().addView(FrameView.NAME, new FrameView(urlString, startDateField.getValue(), endDateField.getValue(), overlayChkBox.getValue()));				
 					getUI().getNavigator().navigateTo(FrameView.NAME);
 				}
 				
@@ -133,6 +132,8 @@ public class MainView extends AbsoluteLayout implements View {
 			
 		});
 		hlayout.addComponent(visualizeButton);
+		
+		hlayout.addComponent(overlayChkBox);
 		form.addComponent(hlayout);
 		
 		layout.addComponent(form);
