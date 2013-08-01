@@ -39,7 +39,8 @@ public class FrameView extends AbsoluteLayout implements View {
 
 	public static final String NAME = "html";
 
-	private static final String SERVICE_URL = "http://ratelo.com/report/html";
+	private static final String SERVICE_URL = "http://www.ratelo.com/report/html";
+	
 	
 	private BrowserFrame browser;
 	

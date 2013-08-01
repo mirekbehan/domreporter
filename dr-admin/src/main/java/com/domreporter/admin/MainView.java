@@ -91,12 +91,19 @@ public class MainView extends AbsoluteLayout implements View {
 			private static final long serialVersionUID = 1L;
 
 			public void buttonClick(ClickEvent event) {
-				
-				
-				
+				String urlString = String.valueOf(container.getContainerProperty(urlTable.getValue(), "url"));
+				if (urlString == "null"){
+					Notification.show("Select a URL!",
+	                        Type.HUMANIZED_MESSAGE);					
+				}else if(startDateField.getValue().compareTo(endDateField.getValue())>0){
+					Notification.show("Start date should be before end date",
+	                        Type.HUMANIZED_MESSAGE);
+				}
+				else {				
 				getSession().setAttribute("testdate", startDateField.getValue());
 				getUI().getNavigator().addView(ResultView.NAME, new ResultView(String.valueOf(container.getContainerProperty(urlTable.getValue(), "url")), startDateField.getValue(), endDateField.getValue()));				
 				getUI().getNavigator().navigateTo(ResultView.NAME);
+				}
 			}
 		});
 		
@@ -113,7 +120,11 @@ public class MainView extends AbsoluteLayout implements View {
 				if (urlString == "null"){
 					Notification.show("Select a URL!",
 	                        Type.HUMANIZED_MESSAGE);					
-				}else {
+				}else if(startDateField.getValue().compareTo(endDateField.getValue())>0){
+					Notification.show("Start date should be before end date",
+	                        Type.HUMANIZED_MESSAGE);
+				}
+				else {
 					getUI().getNavigator().addView(FrameView.NAME, new FrameView(urlString, startDateField.getValue(), endDateField.getValue(), overlayChkBox.getValue()));				
 					getUI().getNavigator().navigateTo(FrameView.NAME);
 				}
@@ -121,16 +132,7 @@ public class MainView extends AbsoluteLayout implements View {
 			}
 		});
 		
-		// TODO
-		visualizeButton.setErrorHandler(new DefaultErrorHandler(){
 
-			@Override
-			public void error(com.vaadin.server.ErrorEvent event) {
-				// TODO Auto-generated method stub
-				super.error(event);
-			}
-			
-		});
 		hlayout.addComponent(visualizeButton);
 		
 		hlayout.addComponent(overlayChkBox);

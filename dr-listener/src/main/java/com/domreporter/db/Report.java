@@ -95,10 +95,12 @@ public class Report {
 		 
 		groupedClicks = groupByElementIds(startDate, endDate, url);
 		for (int i = 0; i < groupedClicks.size(); i++) {
-			String styles = "position: relative; background-color: "
+			String styles = "position: relative;";
+			  if(!overlay){
+					styles= "position: relative; background-color: "					
 					+ getHeatColor(clicks.size(), groupedClicks.get(i)
 							.getElementIdCount())+";";
-			
+					}
 			if (groupedClicks.get(i).getElementId() != -5
 					&& groupedClicks.get(i).getElementId() != -10) {
 				currentElement = body
@@ -130,7 +132,7 @@ public class Report {
 		// set z-index to auto for all elements - is needed for overlay
 		if(overlay) {
 			doc.head().append("<style>*:not(span){ z-index: auto !important;} .dr_overlay {position:fixed; width:100%;	height:100%; top:0; left:0; right:0; bottom:0;"
-					+ "background-color:rgba(100, 100, 100, 0.85);"
+					+ "background-color:rgba(100, 100, 100, 0.7);"
 					+ "background: url(data:;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0kAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAgY0hSTQAAeiYAAICEAAD6AAAAgOgAAHUwAADqYAAAOpgAABdwnLpRPAAAABl0RVh0U29mdHdhcmUAUGFpbnQuTkVUIHYzLjUuNUmK/OAAAAATSURBVBhXY2RgYNgHxGAAYuwDAA78AjwwRoQYAAAAAElFTkSuQmCC) repeat scroll transparent\\9;"
 					+"z-index:9990; color:white;}</style>");
 			doc.body().append("<div class='dr_overlay'>&nbsp;</div>");
